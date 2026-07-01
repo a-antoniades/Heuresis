@@ -1,0 +1,17 @@
+## Search-Specific Context
+
+This is cell-targeted MAP-Elites. The search block below defines the sampled
+target cell and operator for this iteration.
+
+{{ search_context | default("(no archive context yet)") }}
+
+{% include "heuresis/prompts/common/parent_runs.j2" %}
+
+Apply the operator exactly:
+
+- Empty target cell: propose a new approach aimed at the named cell. Do not
+  rely on parent examples; none are provided for empty cells.
+- MUTATE: continue from the selected parent with a material change. Preserve
+  the parent mechanism only if it remains load-bearing.
+- CROSSOVER: combine the load-bearing mechanism from each selected parent into
+  one coherent design rather than stacking unrelated edits.

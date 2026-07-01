@@ -1,0 +1,22 @@
+## Search-Specific Context
+
+This run uses a Model-of-Interestingness gate before execution. The reviewer
+retrieves nearby accepted entries and asks whether this idea is materially
+different. Propose an orthogonal mechanism, especially when the archive is dense
+near the current idea.
+
+{% if archive_context %}
+{{ archive_context }}
+{% else %}
+## Archive
+
+No accepted or failed-training entries yet. Propose a starting point.
+{% endif %}
+
+{% if prior_rejection is defined %}
+## Prior Rejection This Iteration
+
+Prior idea: {{ prior_rejection.summary }}
+
+Reviewer reasoning: {{ prior_rejection.reasoning }}
+{% endif %}

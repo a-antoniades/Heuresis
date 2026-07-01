@@ -1,0 +1,16 @@
+{% include "heuresis/prompts/common/ideator_guidelines.j2" %}
+
+{% include "heuresis/tasks/bbob/prompts/ideator_task.j2" %}
+
+{% include "heuresis/prompts/common/shared_memory_ideator.j2" %}
+
+{% include "heuresis/prompts/search/curiosity_seeding.j2" %}
+
+## Output Contract
+
+Write a single file `candidates.md`. Separate ideas with `---` on its own line.
+Each candidate must be complete and follow this structure:
+
+{% filter replace("Write `idea.md` with this EXACT structure:\n\n", "") %}
+{% include "heuresis/tasks/bbob/idea_schema.md" %}
+{% endfilter %}

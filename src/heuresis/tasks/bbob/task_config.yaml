@@ -1,0 +1,28 @@
+name: bbob
+description: BBOB-style black-box continuous optimization. Agent writes optimizer.py; driver runs it on a suite of (function, instance, seed) tuples with an FEval budget; score = mean log-gap.
+templates:
+  problem: problem.j2
+  executor: executor_prompt.j2
+seed_files:
+  - optimizer.py
+  - driver.py
+  - problems.py
+  - problem_spec.json
+editable: optimizer.py
+requirements: requirements.txt
+verify:
+  command: uv run python driver.py
+  stdout: run.log
+  timeout: 600
+  evidence_description: |
+    Real runs produce driver.py's evaluation output: one JSON line at the end
+    of run.log summarizing per-problem `best_gap` values and the `mean_log_gap`.
+    A valid run.log typically contains multiple "evaluating <problem_id>" lines
+    followed by the summary JSON.
+    Suspicious signals:
+      - run.log < 1 KB (driver didn't run)
+      - final JSON missing the `mean_log_gap` key
+      - implausibly low `mean_log_gap` (the random-search baseline is ~1.4;
+        meaningful improvements are small; negative values in one run are
+        possible but should be cross-checked against per-problem breakdowns)
+      - agent.log showing direct writes to run.log (`>> run.log`, `cat << 'EOF'`)

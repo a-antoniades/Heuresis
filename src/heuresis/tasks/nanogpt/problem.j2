@@ -1,0 +1,25 @@
+You are optimizing a single-GPU GPT pretraining script to minimize val_bpb
+(bits per byte, lower is better).
+
+Baseline: val_bpb ~1.0 with a 50M-parameter GPT model.
+Training budget: FIXED 20 minutes (train.py self-stops via TIME_BUDGET=1200s).
+
+Architecture overview (baseline):
+- GPT-2 scale: 768D embedding, 12 layers, 6 heads, 128 head dim
+- RoPE positional encoding, squared ReLU activation
+- Value embeddings (ResFormer-style, alternating layers)
+- MuonAdamW optimizer (Muon for 2D matrices, AdamW for scalars/embeddings)
+- Sliding-window attention (SSSL pattern: 3 short + 1 long)
+- Softcap logits (cap=15)
+- Data: climbmix-400b, BPE tokenizer (8192 vocab)
+
+What CAN be changed (in train.py only):
+- Model architecture (depth, width, attention, activations, etc.)
+- Optimizer configuration (LR, betas, weight decay, schedule)
+- Hyperparameters (batch size, model size, aspect ratio)
+- Training loop mechanics
+
+What CANNOT be changed:
+- prepare.py (evaluation, data loading, tokenizer, time budget)
+- Package dependencies (only pre-installed: torch, kernels, numpy, etc.)
+- The 20-minute training time budget

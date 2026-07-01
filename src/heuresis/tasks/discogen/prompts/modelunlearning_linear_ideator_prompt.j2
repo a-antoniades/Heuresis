@@ -1,0 +1,94 @@
+{% set metric_name = "score" %}
+
+{% include "heuresis/prompts/common/ideator_guidelines.j2" %}
+
+{% include "heuresis/tasks/discogen/prompts/modelunlearning_ideator_task.j2" %}
+
+{% include "heuresis/prompts/common/local_memory.j2" %}
+
+{% include "heuresis/prompts/common/shared_memory_ideator.j2" %}
+
+{% include "heuresis/prompts/search/linear.j2" %}
+
+## Your workflow
+
+Work entirely by reading files and writing `memory.md` / `idea.md`. Do
+not execute code. Follow these phases IN ORDER:
+
+PHASE 1 -- RECALL AND ANALYZE
+- Read `memory.md` to recall your notes from past iterations.
+- Review parent runs above. For runs that look interesting (best scores,
+  surprising failures, telltale per-metric imbalance), open their
+  `discovered/loss.py`, `notes.md`, `run.log` via `/workspace/runs/<run_id>/`.
+- Identify *what* changed and *which way it pushed each metric*. A loss
+  formulation that moves both metrics the right way is a candidate worth
+  varying along; one that trades them is a warning of the trap above.
+
+PHASE 2 -- STRATEGIC THINKING
+- Check your Approach Map in `memory.md`: which mechanism families have
+  been tried? Which haven't?
+- Consider orthogonal directions: changes to which signal the loss
+  consumes (token-level vs sequence-level, forget vs retain weighting,
+  reference-model anchoring, intermediate-activation targeting,
+  representation-level interventions, output-distribution interventions,
+  etc.). Mechanism design is the search space — pick a region that's
+  underexplored given the parents.
+- Watch for diminishing returns: many similar tweaks giving similar
+  scores ⇒ change the mechanism family, not the hyperparameters.
+- Pay attention to per-metric balance, not just the composite. A run
+  with one normalised metric at 2.0 and another at 0.5 is structurally
+  weaker than two metrics both at 1.3, even if the composite is
+  similar — the former is fragile and likely lopsided trap-territory.
+
+**Scoping**: the highest-throughput ideas are ambitious in mechanism but
+scoped in surface area. Strong runs typically modify just `loss.py` with
+one substantive mechanism (a new objective, a new regulariser, a new
+representation-level intervention). Stacking multiple new mechanisms in
+one run rarely fits the time budget and is hard to attribute when the
+score moves.
+
+Pick ONE mechanism per idea and confine the change to `loss.py`:
+ambitious within that file, restrained in scope.
+
+Write `idea.md` with this EXACT structure:
+
+## Strategy
+(1-2 sentence thesis: which mechanism, why we expect it to shift every
+metric in the right direction.)
+
+## Modification
+
+### What to change
+(Exact functions in `discovered/loss.py`, exact code changes. Include
+any new helper methods, state variables, or hyperparameters.)
+
+### Why this should work
+(Technical reasoning: what specifically about this loss formulation
+should improve every metric? Cite any prior paper or method you're
+drawing from, if applicable.)
+
+## Executor Freedom
+(ONLY these parameters may be tuned by the executor — everything else
+is FIXED. For each: starting value and allowed range.)
+
+## Implementation Plan
+(Numbered steps for editing `loss.py`.)
+
+## Pitfalls to Watch
+(Known failure modes from past runs, numerical stability issues —
+log-of-zero, exploding gradients, NaN — signature/interface violations,
+per-metric collapse warning signs visible in the live training loss.)
+
+IMPORTANT RULES:
+- Be SPECIFIC: exact function names, exact changes to `loss.py`.
+- The Modification section is a COMPLETE BLUEPRINT.
+- Executor Freedom is a SHORT list of narrow tuning knobs.
+- Your job is to explore DIVERSE mechanisms across iterations, not
+  hyperparameter-only tweaks.
+- Be ambitious in mechanism, but scope each idea to `loss.py` so
+  iterations complete in time.
+- When a run failed, reference the specific failure in Pitfalls.
+- Do NOT change the `CustomUnlearnTrainer` class name or the
+  `compute_loss` signature.
+
+Update `memory.md` first, then write `idea.md`.

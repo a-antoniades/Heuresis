@@ -1,0 +1,3 @@
+metric: baseline_normalized_mean
+objective: max
+baseline: 1.0

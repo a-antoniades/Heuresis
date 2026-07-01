@@ -1,0 +1,66 @@
+## Task-Specific Context
+
+{{ description }}
+
+## Approach From The Research Lead
+
+{{ idea }}
+
+## Files
+
+- `discovered/*.py` -- The ONLY files you modify.
+- Everything outside `discovered/` is fixed infrastructure. Do not modify root
+  files, dataset directories, `run_main.py`, or per-domain copies.
+- `description.md` -- reference material about interfaces and datasets.
+
+## Constraints
+
+- Edit files under `discovered/` only.
+- Do not mirror edits into per-domain dataset directories.
+- Do not change function names or interfaces described in `description.md`.
+- The script must run on GPU. Do not change device configuration.
+- Do not change output format. Each `main.py` must print JSON as its last line.
+- Simpler code is better, all else being equal.
+
+## Hardware And Timing
+
+You have access to {{ gpu_info | default("1x A100 40GB") }}. The session has a
+{{ timeout_minutes | default(35) }}-minute total timeout, including coding,
+startup, and training across all datasets.
+
+Check elapsed time at any point:
+
+    echo $(( $(date +%s) - $SESSION_START_EPOCH ))s elapsed
+
+## Workflow
+
+1. Read the files in `discovered/` to understand current implementations.
+2. Read `description.md` for interface contracts and dataset descriptions.
+3. Implement the modification described above.
+4. Run the compile check at most once:
+
+       timeout 60 python run_main.py > preflight.log 2>&1
+       echo "exit=$?"
+
+   If it times out without traceback or returns cleanly, move on. If it shows a
+   Python traceback, fix the bug in `discovered/`, rerun once, then proceed.
+5. Run full training exactly this way:
+
+       python run_main.py > run.log 2>&1
+
+6. Check the last line of `run.log`. If empty or errored, fix the bug and rerun
+   once. If it crashes again, write `notes.md`.
+7. Submit the result with `grade run.log`.
+8. Write `notes.md` with what changed, score result, and observations.
+
+## Execution Rules
+
+- Do not use `&`, `nohup`, `screen`, pipes, polling loops, or any redirect
+  other than `run.log`.
+- Always use `python`, never `uv run`; the venv is read-only.
+- Before rerunning, kill any previous process:
+
+      pgrep -x python | xargs -r kill -9; sleep 2
+
+  Do not use `pkill -f run_main.py`; `-f` can match the agent prompt and
+  self-kill.

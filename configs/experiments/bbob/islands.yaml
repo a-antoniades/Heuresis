@@ -1,0 +1,27 @@
+# Heuresis launch config. Override any value with CLI flags after this file.
+task: bbob
+strategy: islands
+settings:
+  experiment_name: bbob-islands
+  resume_exp_id: null
+  agent: opencode
+  model: google/gemini-3.1-pro-preview
+  gpus: []
+  num_iterations: 20
+  count_valid: true
+  num_ideators: 4
+  executor_timeout: 600
+  ideator_timeout: 300
+  reviewer_timeout: 300
+  judge_timeout: 300
+  judge_agent: claude
+  judge_model: claude-sonnet-4-6
+  enable_judge: true
+  novelty_threshold: 2
+  novelty_max_rounds: 3
+  max_parents: 5
+  session_reset_every: 10
+  memory: false
+strategy_config:
+  migration_interval: 24
+  crossover_rate: 0.4

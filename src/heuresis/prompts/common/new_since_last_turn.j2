@@ -1,0 +1,9 @@
+## New Since Your Last Turn ({{ new_since_last_turn | length }})
+
+{% if new_since_last_turn %}
+{% for r in new_since_last_turn %}
+- {{ r.run_id }}{% if (memory | default(false)) and r.executor_id is defined %} (executor_id=`{{ r.executor_id }}`){% endif %}: {{ metric_name | default("score") }}={{ r.score }}{% if r.idea is defined and r.idea %} | "{{ r.idea[:120] }}"{% endif %}
+{% endfor %}
+{% else %}
+(nothing new since you last woke up)
+{% endif %}

@@ -1,0 +1,79 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "heuresis"
+version = "0.2.0"
+description = "Composable primitives for sandboxed agent experiments."
+readme = "README.md"
+license = "Apache-2.0"
+authors = [
+  { name = "Antonis Antoniades" },
+  { name = "Deepak Nathani" },
+  { name = "Ritam Saha" },
+]
+requires-python = ">=3.12, <3.14"
+dependencies = [
+  "jinja2>=3.1",
+  "click>=8.0",
+  "scipy>=1.17.1",
+  "umap-learn>=0.5.12",
+  "google-genai>=1.73.0",
+  "pyyaml>=6.0.3",
+  "sqlite-vec>=0.1.6",
+  "matplotlib>=3.10.8",
+  "numpy>=1.24",
+  "python-dotenv>=1.2.2",
+]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: Apache Software License",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+[project.urls]
+Repository = "https://github.com/a-antoniades/Heuresis"
+Issues = "https://github.com/a-antoniades/Heuresis/issues"
+
+[project.scripts]
+heuresis = "heuresis.experiment_cli_args:main"
+
+[project.optional-dependencies]
+discogen = ["discogen"]
+sandbox = ["uv>=0.4"]
+novelty = ["huggingface-hub>=1.8.0", "uv>=0.4"]
+dev = [
+  "discogen",
+  "pytest>=7.0",
+  "mypy>=1.11",
+  "ruff>=0.6",
+  "types-PyYAML>=6.0",
+  "torch>=2.11.0",
+  "ty>=0.0.39",
+]
+
+[tool.uv.sources]
+discogen = { git = "https://github.com/AlexGoldie/discogen.git", rev = "cbcb1a2ae043ff44a618ee8a584dad9f623ebb30" }
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/heuresis"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+markers = [
+  "integration: optional tests that need external services or local run data",
+  "live: tests that make live API calls",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.mypy]
+python_version = "3.12"
+ignore_missing_imports = true
+warn_unused_ignores = false

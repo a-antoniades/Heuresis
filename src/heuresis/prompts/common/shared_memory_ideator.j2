@@ -1,0 +1,15 @@
+{% if memory | default(false) %}
+## Shared Campaign Memory
+
+The `memory` shell command is available. It is a CLI, not a Python module. Do
+not open sockets or read `/workspace/.memory*` files.
+
+At turn start, run one relevant `memory search` or `memory read` command and
+fold useful context into `memory.md`.
+
+Before appending a durable learning, search for an equivalent claim first. Only
+append if the finding is new, contradictory, or materially extends what is
+already stored.
+
+    memory append "<one-sentence finding>" --tags tag1,tag2
+{% endif %}

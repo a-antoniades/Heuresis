@@ -1,0 +1,8 @@
+{
+  "functions": [1, 8, 15],
+  "dim": 5,
+  "instances": [1, 2],
+  "seeds": [0, 1, 2],
+  "budget": 1000,
+  "wallclock_cap_s": 10
+}

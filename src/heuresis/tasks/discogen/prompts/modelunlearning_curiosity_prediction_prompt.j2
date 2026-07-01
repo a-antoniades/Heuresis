@@ -1,0 +1,16 @@
+{% include "heuresis/prompts/common/predictor_guidelines.j2" %}
+
+{% include "heuresis/tasks/discogen/prompts/modelunlearning_ideator_task.j2" %}
+
+{% include "heuresis/prompts/search/curiosity_prediction.j2" %}
+
+## Calibration Notes
+
+Predict the baseline-normalized composite score. Values above 1.0 beat the
+baseline on average, but lopsided per-metric movement is a major risk for this
+task. If you predict invalid, set `fitness` to null.
+
+## Output Contract
+
+Write a single file `prediction.json` containing only a JSON object with fields
+`valid`, `fitness`, `confidence`, and `reasoning`. Do not write anything else.

@@ -1,0 +1,9 @@
+## Selected Parent Runs ({{ past_results | length }})
+
+{% if past_results %}
+{% for r in past_results %}
+- {{ r.run_id }}{% if (memory | default(false)) and r.executor_id is defined %} (executor_id=`{{ r.executor_id }}`){% endif %}: {{ metric_name | default("score") }}={{ r.score }}{% if r.idea is defined and r.idea %} | "{{ r.idea[:120] }}"{% elif r.metadata is defined and r.metadata.get("idea") %} | "{{ r.metadata.get("idea", "")[:120] }}"{% endif %}
+{% endfor %}
+{% else %}
+(none yet -- you are the first)
+{% endif %}

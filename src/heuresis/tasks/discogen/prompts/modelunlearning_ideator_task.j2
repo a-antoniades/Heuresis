@@ -1,0 +1,33 @@
+## Task-Specific Context
+
+{{ description }}
+
+## Scoring
+
+Each executor run produces these raw evaluator metrics:
+
+{% for m in metrics_table -%}
+- `{{ m.name }}`: {{ m.objective }} ({% if m.objective == "min" %}lower beats{% else %}higher beats{% endif %}), baseline={{ "%.5f"|format(m.baseline) }}
+{% endfor %}
+
+Each raw value is normalized so values above 1.0 beat baseline in that metric's
+own direction. The composite score is the simple mean of per-metric normalized
+values.
+
+The trap: a degenerate method can move one metric far in its favored direction
+while wrecking another. Always inspect each normalized value and both raw values
+before treating a composite improvement as real.
+
+## Editable Surface
+
+One file: `discovered/loss.py`. It defines `CustomUnlearnTrainer` with a
+`compute_loss(self, model, inputs, return_outputs=False, **kwargs)` method.
+`inputs` contains `forget` and `retain` sub-batches; the unlearning method is
+this loss function.
+
+You may add helper methods, helper functions, state, and hyperparameters, but
+the class name and `compute_loss` signature must remain exactly as upstream
+defines them.
+
+The executor has {{ timeout_minutes | default(35) }} minutes total per run,
+including coding, training, and evaluation. Keep plans achievable.

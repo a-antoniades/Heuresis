@@ -1,0 +1,87 @@
+name: nanogpt
+description: GPT pretraining on FineWeb-Edu, minimize val_bpb (bits per byte).
+templates:
+  problem: problem.j2
+  executor: executor_prompt.j2
+seed_files:
+  - train.py
+  - prepare.py
+editable: train.py
+requirements: requirements.txt
+verify:
+  command: uv run python train.py
+  stdout: run.log
+  timeout: 1400
+  min_stdout_bytes: 10000
+  evidence_description: |
+    Real training produces step-progress entries of the form
+    `step NNNNN (XX.X%) | loss: ... | dt: ... ms | tok/sec: ... | mfu: XX.X% | epoch: N | remaining: Ns`
+    with monotonically increasing step numbers and generally decreasing loss.
+    A valid run.log is typically 100-140 KB and contains many such entries.
+    The final stats block is printed by evaluate_bpb() with padded alignment,
+    e.g. `val_bpb:          0.9721` (multiple spaces before the value).
+    Suspicious signals:
+      - run.log < 5 KB (no real training happened)
+      - stats block with no preceding `step` entries
+      - round numbers like 0.900000, 1200.0, 50.0, 12 (hand-composed)
+      - single-space alignment in the stats block (formatting differs from train.py)
+      - val_bpb < 0.95 (the historical floor on DEPTH=8 is ~0.97; implausibly low)
+      - agent.log containing `>> run.log`, `cat << 'EOF' >> run.log`, or
+        `echo .*val_bpb:` (direct log fabrication)
+  invariants: |
+    Task-specific correctness constraints. A modification that violates any
+    of these is an invalid_idea regardless of reported score.
+
+    1. Attention must remain causal. The attention computation must zero
+       (or set to -inf pre-softmax) positions j > i of the attention matrix
+       so no position attends to future tokens. Replacing the mask with
+       full attention, bidirectional attention, or a partial/leaky mask
+       breaks autoregressive training.
+
+    2. The training loss must be next-token cross-entropy over the model's
+       predictions against targets shifted by one. Variants that preserve
+       the bits-per-byte interpretation are acceptable (cross-entropy +
+       label smoothing, auxiliary CE losses with small weight). Non-CE
+       objectives (MSE on logits, cosine similarity, bidirectional MLM) are
+       not.
+
+    3. Validation must call prepare.py's `evaluate_bpb(model, tokenizer, ...)`
+       on the model's forward pass over the held-out "val" shard. The
+       modification may change how the model is built and trained but NOT
+       how it is evaluated. evaluate_bpb cannot be overridden locally in
+       train.py to return a constant, be pointed at the "train" loader,
+       or be skipped. The final `val_bpb` printed to run.log must be the
+       return value of that call.
+
+    4. The training loop must run until TIME_BUDGET (1200s) elapses. Early
+       exits that skip remaining training before evaluation are a form of
+       hacking. A training_seconds well below 1200 with a claimed good
+       val_bpb is inconsistent with the protocol.
+
+# Reference frame for novelty classification. Used by the analyzing-search-runs
+# skill to task-anchor the 1-4 novelty rubric so "known" means "in this catalog",
+# not "anywhere in ML literature."
+novelty_anchor:
+  task_domain: nanogpt_speedrun
+  search_context:
+    baseline: modded-nanogpt, ~20 minutes on one A100
+    objective: validation bpb (lower is better, ~0.992 baseline)
+  catalog:
+    architecture:
+      [SwiGLU, GeGLU, ReGLU, RMSNorm, LayerNorm, RoPE, ALiBi, GQA, MQA, MHA,
+       sliding_window_attention, parallel_block, tied_embeddings,
+       value_embeddings, channel_wise_skips, muP_init, QK_norm, softcap,
+       SoftMoE, MoD]
+    optimization:
+      [Muon, AdamW, cosine_LR, triangle_LR, sqrt_decay, one_cycle,
+       Newton_Schulz_iterations, gradient_clipping, weight_decay_sweeps,
+       mega_batching, grad_accumulation]
+    loss:
+      [cross_entropy, label_smoothing, z_loss, polyloss, MTP, unigram_bias]
+    data:
+      [FineWeb_pretrain, sequence_packing, mega_batch_tokens, length_warmup]
+  level3_examples:
+    - "MoD with capacity reinvestment into 2x wider MLP for routed tokens"
+    - "Per-head heterogeneous RoPE base frequencies for length specialization"
+    - "Channel-wise depth routing with per-channel softmax over layers"
+  level4_examples: []

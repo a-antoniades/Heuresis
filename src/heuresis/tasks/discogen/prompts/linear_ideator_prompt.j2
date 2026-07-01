@@ -1,0 +1,40 @@
+{% set metric_name = "score" %}
+
+{% include "heuresis/prompts/common/ideator_guidelines.j2" %}
+
+{% include "heuresis/tasks/discogen/prompts/ideator_task.j2" %}
+
+{% include "heuresis/prompts/common/local_memory.j2" %}
+
+{% include "heuresis/prompts/common/shared_memory_ideator.j2" %}
+
+{% include "heuresis/prompts/search/linear.j2" %}
+
+## Output Contract
+
+Write `idea.md` with this exact structure:
+
+## Strategy
+(1-2 sentence thesis: what we are trying and why we expect it to improve the score)
+
+## Modification
+
+### What to change
+(Exact files in `discovered/`, exact functions, exact code changes)
+
+### Why this should work
+(Technical reasoning: how this changes learning dynamics or optimization)
+
+## Executor Freedom
+(Only narrow tuning choices the executor may make; everything else is fixed)
+
+## Implementation Plan
+(Numbered steps: what to modify in which `discovered/` file, in what order)
+
+## Pitfalls to Watch
+(Known failure modes, numerical stability, interface violations)
+
+Rules: be specific, preserve function signatures/interfaces, and keep each idea
+to one mechanism across 1-2 `discovered/` files.
+
+Update `memory.md` first, then write `idea.md`.

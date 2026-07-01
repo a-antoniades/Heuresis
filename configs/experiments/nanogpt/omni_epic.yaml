@@ -1,0 +1,38 @@
+# Heuresis launch config. Override any value with CLI flags after this file.
+task: nanogpt
+strategy: omni_epic
+settings:
+  experiment_name: nanogpt-omni-epic
+  resume_exp_id: null
+  agent: opencode
+  model: google/gemini-3.1-pro-preview
+  gpus:
+  - 0
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  num_iterations: 400
+  count_valid: true
+  num_ideators: 8
+  executor_timeout: 2100
+  ideator_timeout: 600
+  reviewer_timeout: 300
+  judge_timeout: 300
+  judge_agent: claude
+  judge_model: claude-sonnet-4-6
+  enable_judge: true
+  novelty_threshold: 2
+  novelty_max_rounds: 3
+  max_parents: 5
+  session_reset_every: 10
+  memory: true
+strategy_config:
+  min_archive_size: 5
+  seed_source: 2026-04-14_104048_nanogpt-linear
+  seed_count: 10
+  skip_meta_test: false
+  ideators_per_gpu: 1

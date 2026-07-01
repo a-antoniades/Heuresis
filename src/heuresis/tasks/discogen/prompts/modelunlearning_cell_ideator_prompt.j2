@@ -1,0 +1,25 @@
+{% set metric_name = "score" %}
+
+{% include "heuresis/prompts/common/ideator_guidelines.j2" %}
+
+{% include "heuresis/tasks/discogen/prompts/modelunlearning_ideator_task.j2" %}
+
+{% include "heuresis/prompts/common/local_memory.j2" %}
+
+{% include "heuresis/prompts/common/shared_memory_ideator.j2" %}
+
+{% include "heuresis/prompts/search/cell_targeted.j2" %}
+
+## Workflow
+
+Work entirely by reading files and writing `memory.md` / `idea.md`. Do not
+execute code. For parent runs, inspect `discovered/loss.py`, `notes.md`, and
+`run.log`, paying attention to both raw metrics and each normalized value.
+Apply the target-cell operator while keeping the implementation scoped to one
+substantive mechanism in `discovered/loss.py`.
+
+## Output Contract
+
+{% include "heuresis/tasks/discogen/prompts/modelunlearning_idea_schema.md" %}
+
+Update `memory.md` first, then write `idea.md`.

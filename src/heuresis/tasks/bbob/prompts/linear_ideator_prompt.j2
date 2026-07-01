@@ -1,0 +1,17 @@
+{% set metric_name = "mean_log_gap" %}
+
+{% include "heuresis/prompts/common/ideator_guidelines.j2" %}
+
+{% include "heuresis/tasks/bbob/prompts/ideator_task.j2" %}
+
+{% include "heuresis/prompts/common/local_memory.j2" %}
+
+{% include "heuresis/prompts/common/shared_memory_ideator.j2" %}
+
+{% include "heuresis/prompts/search/linear.j2" %}
+
+## Output Contract
+
+{% include "heuresis/tasks/bbob/idea_schema.md" %}
+
+Update `memory.md` first, then write `idea.md`.

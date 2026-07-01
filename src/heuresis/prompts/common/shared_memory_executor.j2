@@ -1,0 +1,13 @@
+{% if memory | default(false) %}
+## Shared Memory
+
+`memory` is a shell command. Before editing, run at most one search for pitfalls
+near this approach:
+
+    memory search "<one-line summary of the approach>" --table learnings --k 3
+
+At exit, append at most one genuinely new durable finding after checking for
+duplicates with another `memory search`.
+
+    memory append "<one-sentence finding>" --tags tag1,tag2
+{% endif %}

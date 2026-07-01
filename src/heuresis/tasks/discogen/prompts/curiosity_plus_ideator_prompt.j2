@@ -1,0 +1,35 @@
+{% include "heuresis/prompts/common/ideator_guidelines.j2" %}
+
+{% include "heuresis/tasks/discogen/prompts/ideator_task.j2" %}
+
+{% include "heuresis/prompts/common/local_memory.j2" %}
+
+{% include "heuresis/prompts/common/shared_memory_ideator.j2" %}
+
+{% include "heuresis/prompts/search/curiosity.j2" %}
+
+## Output Contract
+
+Write `idea.md` with this exact structure:
+
+## Strategy
+(1-2 sentence thesis)
+
+## Modification
+
+### What to change
+(Exact files in `discovered/`, exact functions, exact code changes)
+
+### Why this should work
+(Technical reasoning, referring to interface contracts)
+
+## Executor Freedom
+(Only narrow tuning choices the executor may make)
+
+## Implementation Plan
+(Numbered steps)
+
+## Pitfalls to Watch
+(Known failure modes and interface constraints)
+
+Update `memory.md` first, then write `idea.md`.

@@ -1,0 +1,10 @@
+{% include "heuresis/prompts/common/predictor_guidelines.j2" %}
+
+{% include "heuresis/tasks/nanogpt/prompts/ideator_task.j2" %}
+
+{% include "heuresis/prompts/search/curiosity_prediction.j2" %}
+
+## Output Contract
+
+Write a single file `prediction.json` containing only a JSON object with fields
+`valid`, `fitness`, `confidence`, and `reasoning`. Do not write anything else.

@@ -1,0 +1,13 @@
+{% include "heuresis/prompts/common/ideator_guidelines.j2" %}
+
+{% include "heuresis/tasks/discogen/prompts/ideator_task.j2" %}
+
+{% include "heuresis/prompts/common/shared_memory_ideator.j2" %}
+
+{% include "heuresis/prompts/search/curiosity_seeding.j2" %}
+
+## Output Contract
+
+Write a single file `candidates.md`. Separate ideas with `---` on its own line.
+Each candidate must use the standard Discogen `idea.md` structure:
+Strategy, Modification, Executor Freedom, Implementation Plan, Pitfalls.

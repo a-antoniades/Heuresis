@@ -1,0 +1,14 @@
+## Search-Specific Context
+
+This is island search. Parent runs come from this ideator's island, except when
+migration has introduced an external elite.
+
+{{ search_context | default("(no island context yet)") }}
+
+{% include "heuresis/prompts/common/parent_runs.j2" %}
+
+Apply the operator exactly:
+
+- MUTATE: take one parent and apply a material change.
+- COMBINE: take two parents and synthesize a design that unifies their
+  load-bearing mechanisms.

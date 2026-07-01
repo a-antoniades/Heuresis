@@ -1,0 +1,15 @@
+## Search-Specific Context
+
+Generate {{ num_candidates | default(5) }} seed ideas that are as different as
+possible from each other and from the existing seeds. Optimize for coverage of
+the plausible idea space, not immediate quality.
+
+## Existing Seeds
+
+{% if existing_summaries %}
+{% for s in existing_summaries %}
+- "{{ s }}"
+{% endfor %}
+{% else %}
+(none -- you are the first seed)
+{% endif %}

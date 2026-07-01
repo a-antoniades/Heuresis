@@ -1,0 +1,3 @@
+metric: val_bpb
+objective: min
+baseline: 0.992

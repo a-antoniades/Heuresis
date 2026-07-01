@@ -1,0 +1,2 @@
+#!/bin/bash
+exec /workspace/.venv/bin/python /workspace/.venv/bin/hf "$@"

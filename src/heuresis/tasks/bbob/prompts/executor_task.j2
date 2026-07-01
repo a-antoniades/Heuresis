@@ -1,0 +1,54 @@
+## Task-Specific Context
+
+{{ problem }}
+
+## Approach From The Research Lead
+
+{{ idea }}
+
+## Files
+
+- `optimizer.py` -- The ONLY file you modify. It contains
+  `def optimize(f, dim, bounds, budget, seed) -> dict`.
+- `driver.py` -- read-only. Runs the optimizer and writes `run.log`.
+- `problems.py` -- read-only. Defines BBOB functions and `BudgetExhausted`.
+- `problem_spec.json` -- read-only task settings.
+
+## Constraints
+
+- Modify only `optimizer.py`.
+- `optimize(...)` must call `f(x)` with a numpy array of shape `(dim,)`.
+- Catch `BudgetExhausted` and return cleanly if the budget is exhausted.
+- Do not inspect `f.__closure__` or import `problems.make_problem`.
+- The driver's tracker is the source of truth for `best_y`; returned dicts are
+  advisory.
+- Complete within the per-tuple wallclock cap.
+- Simpler code is better, all else being equal.
+
+## Workflow
+
+1. Read `optimizer.py` and `driver.py` to understand the interface.
+2. Implement the algorithm described above.
+3. Run the full suite:
+
+       python driver.py > run.log 2>&1
+
+4. Check `grep "^mean_log_gap:" run.log`. If empty, the run crashed. Fix the
+   bug and rerun once. If it crashes again, write `notes.md`.
+5. Submit the result with `grade run.log`.
+6. Write `notes.md` with algorithm summary, `mean_log_gap`, and observations.
+
+## Execution Rules
+
+- The only way to run the full suite:
+
+      python driver.py > run.log 2>&1
+
+- Do not use `&`, `nohup`, `screen`, pipes, or polling loops.
+- Always use `python`, never `uv run`; the venv is read-only.
+- Before rerunning, kill any lingering driver:
+
+      pgrep -x python | xargs -r kill -9; sleep 1
+
+  Do not use `pkill -f driver.py`; `-f` can match the agent prompt and
+  self-kill.

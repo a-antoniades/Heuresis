@@ -1,0 +1,80 @@
+.env
+.env.*
+!.env.example
+gemini-keys.txt
+**/gemini-keys.txt
+
+# Internal / not-for-publication
+docs/story.md
+docs/pitch/
+texput.fls
+.antigravitycli/
+.external/
+scripts/upload_folder.py
+scripts/upload_run_pruned.py
+*.credentials.json
+credentials.json
+runs/*
+!runs/README.md
+venvs/
+.venv/
+.deps/
+data/
+cache/
+store.db
+*.pyc
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.pyre/
+.tox/
+.nox/
+.coverage
+coverage.xml
+htmlcov/
+*.log
+logs/
+build/
+dist/
+*.egg-info/
+.eggs/
+.ipynb_checkpoints/
+.DS_Store
+Thumbs.db
+*~
+# Analysis: only the reusable library code is published. analysis/utils/ is the
+# public analysis helper (imported by scripts/ and tests/); analysis/libs/ holds
+# the paper-figure pipeline (imported by gitignored figure scripts; only
+# legacy_store.py is covered by a tracked test). Both stay tracked. Everything
+# else under analysis/ is run-specific research output — kept on disk locally
+# but not committed to the public repo.
+/analysis/*
+!/analysis/__init__.py
+!/analysis/libs/
+!/analysis/utils/
+.opencode/
+.codex
+.tmp/
+.claude/
+.worktrees/
+task_src/
+
+# Paper (separate git repo, see paper/) — anchored to repo root.
+/paper/
+
+# VS Code workspace files (machine-specific paths)
+*.code-workspace
+
+# VS Code Local History extension
+.history/
+
+# Personal experiment journal (per-clone, not shared)
+/experiments.md
+.vscode/
+
+# Maintainer-only material (DEVLOG, archived docs/plans/specs, ops scripts,
+# local Claude skills): kept on disk locally, not published. Only the
+# conventions README is tracked so contributors can see the policy.
+/maintainer/*
+!/maintainer/README.md

@@ -1,0 +1,21 @@
+# DiscoGen ModelUnlearning -- WMDP-cyber, Qwen2.5-1.5B-Instruct, loss-only edit.
+#
+# Single-dataset training surface for the search loop. Per the discogen
+# layout, a per-dataset workspace is materialized as
+# `<task_id>_<model_id>/`, here `wmdp_cyber_Qwen2.5-1.5B-Instruct/`.
+# The test_task_id list is identical because the benchmark already exposes
+# train+test rollups via WMDP and MMLU evaluators inside that single
+# workspace; meta-test generalization is studied via dataset-level
+# perturbations elsewhere, not via a held-out task list here.
+train_task_id: [wmdp_cyber]
+test_task_id: [wmdp_cyber]
+
+train_model_id: [Qwen2.5-1.5B-Instruct]
+test_model_id: [Qwen2.5-1.5B-Instruct]
+
+source_path: task_src/ModelUnlearning
+template_backend: default
+
+# Only `loss.py` is editable in the upstream ModelUnlearning template -- the
+# unlearning method *is* the loss function. Reflecting that here.
+change_loss: true

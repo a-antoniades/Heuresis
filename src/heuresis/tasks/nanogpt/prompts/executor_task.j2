@@ -1,0 +1,67 @@
+## Task-Specific Context
+
+{{ problem }}
+
+## Approach From The Research Lead
+
+{{ idea }}
+
+## Files
+
+- `train.py` -- The ONLY file you modify. Contains model architecture,
+  optimizer, hyperparameters, and training loop.
+- `prepare.py` -- read-only. Contains fixed evaluation metric, data loading,
+  tokenizer, and constants.
+
+`train.py` imports from `prepare.py`:
+
+    from prepare import MAX_SEQ_LEN, TIME_BUDGET, Tokenizer, make_dataloader, evaluate_bpb
+
+## Constraints
+
+- You may ONLY modify `train.py`.
+- The script must run on GPU. Do not change the device to CPU, CUDA setup, GPU
+  memory config, or autocast context.
+- Do not change the evaluation harness, time budget, validation configuration,
+  or output format.
+- Do not introduce information leakage from future tokens.
+- Keep VRAM growth controlled; if model size grows meaningfully, reduce batch
+  size or gradient accumulation to stay within memory.
+- Simpler code is better, all else being equal.
+
+## Hardware And Timing
+
+You have access to {{ gpu_info | default("1x A100 40GB") }}. The session has a
+{{ timeout_minutes | default(35) }}-minute total timeout, including coding,
+startup, and the 20-minute training run.
+
+Check elapsed time at any point:
+
+    echo $(( $(date +%s) - $SESSION_START_EPOCH ))s elapsed
+
+## Workflow
+
+1. Read `train.py` to understand the baseline.
+2. Implement the modification described above.
+3. Run training exactly as specified below. `train.py` self-stops after 20
+   minutes; that is expected.
+4. Check `grep "^val_bpb:" run.log`. If empty, the run crashed. Fix the bug and
+   rerun once. If it crashes again, write `notes.md` explaining the failure.
+5. Submit the result with `grade run.log`.
+6. Write `notes.md` with what changed, the `val_bpb` result, and observations.
+
+## Execution Rules
+
+- The only way to run full training:
+
+      python train.py > run.log 2>&1
+
+  Do not use `&`, `nohup`, `screen`, pipes, polling loops, or any redirect
+  other than `run.log`.
+- Always use `python`, never `uv run`; the venv is read-only.
+- Before rerunning `train.py`, kill any previous training process:
+
+      pgrep -x python | xargs -r kill -9; sleep 2
+
+  Do not use `pkill -f train.py`; `-f` can match the agent prompt and
+  self-kill.

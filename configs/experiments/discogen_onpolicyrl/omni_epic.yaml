@@ -1,0 +1,38 @@
+# Heuresis launch config. Override any value with CLI flags after this file.
+task: discogen_onpolicyrl
+strategy: omni_epic
+settings:
+  experiment_name: discogen-onpolicyrl-omni_epic
+  resume_exp_id: null
+  agent: opencode
+  model: google/gemini-3.1-pro-preview
+  gpus:
+  - 4
+  - 5
+  - 6
+  - 7
+  num_iterations: 100
+  count_valid: true
+  num_ideators: 4
+  executor_timeout: 1200
+  ideator_timeout: 600
+  reviewer_timeout: 300
+  judge_timeout: 300
+  judge_agent: claude
+  judge_model: claude-sonnet-4-6
+  enable_judge: true
+  novelty_threshold: 2
+  novelty_max_rounds: 3
+  max_parents: 5
+  session_reset_every: 10
+  memory: true
+task_config:
+  config: configs/discogen/onpolicy_rl_breakout_all_editable.yaml
+  domain: OnPolicyRL
+  mu_fast_eval: false
+strategy_config:
+  min_archive_size: 5
+  seed_source: ''
+  seed_count: 10
+  skip_meta_test: false
+  ideators_per_gpu: 1

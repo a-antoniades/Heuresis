@@ -1,0 +1,10 @@
+## Task-Specific Context
+
+{{ description }}
+
+The executor has {{ timeout_minutes | default(35) }} minutes per run, including
+coding, startup, and training across all datasets. Keep plans achievable.
+
+Strong runs are usually ambitious in mechanism but scoped in surface area:
+modify 1-2 files in `discovered/` and target one mechanism. Do not propose broad
+pipeline rewrites or interface changes.

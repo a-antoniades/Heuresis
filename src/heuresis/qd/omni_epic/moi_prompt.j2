@@ -1,0 +1,30 @@
+You are evaluating whether a research idea is INTERESTING enough to test on the {{ task_name }} task.
+
+{{ domain_description }}
+
+## Task
+{{ problem }}
+
+The metric is `{{ metric }}` ({{ metric_direction }}); the unmodified baseline scores {{ baseline }}.
+
+## Seed code (the file the candidate would modify)
+```python
+{{ seed_code }}
+```
+
+## Candidate idea
+{{ candidate }}
+
+## Prior accepted ideas (nearest by embedding similarity)
+{% for ex in examples -%}
+### Example {{ loop.index }} — run `{{ ex.run_id }}` (similarity {{ "%.3f"|format(ex.similarity) }}, score {{ ex.score }})
+{{ ex.plan }}
+
+{% endfor -%}
+
+## Question
+Is this candidate idea INTERESTING — i.e., materially different from prior accepted ideas
+and plausibly capable of moving `{{ metric }}` further? Reject ideas that are minor variants
+of prior accepted entries or unlikely to affect the metric.
+
+Respond with JSON only, no prose: {"interesting": <bool>, "reasoning": "<one to three sentences>"}.

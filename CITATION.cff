@@ -1,0 +1,38 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite the paper below."
+title: "Heuresis: Quality-Diversity Search for Coding Agents"
+type: software
+authors:
+  - family-names: "Antoniades"
+    given-names: "Antonis"
+  - family-names: "Nathani"
+    given-names: "Deepak"
+  - family-names: "Saha"
+    given-names: "Ritam"
+repository-code: "https://github.com/a-antoniades/Heuresis"
+license: "Apache-2.0"
+preferred-citation:
+  type: article
+  title: "Heuresis: Search Strategies for Autonomous AI Research Agents Across Quality, Diversity and Novelty"
+  year: 2026
+  url: "https://arxiv.org/abs/2606.25198"
+  notes: "arXiv:2606.25198 [cs.AI]"
+  authors:
+    - family-names: "Antoniades"
+      given-names: "Antonis"
+    - family-names: "Nathani"
+      given-names: "Deepak"
+    - family-names: "Saha"
+      given-names: "Ritam"
+    - family-names: "Amayuelas"
+      given-names: "Alfonso"
+    - family-names: "Bercovich"
+      given-names: "Ivan"
+    - family-names: "Weng"
+      given-names: "Zhaotian"
+    - family-names: "Baskaran"
+      given-names: "Vignesh"
+    - family-names: "Bhatia"
+      given-names: "Kunal"
+    - family-names: "Wang"
+      given-names: "William Yang"

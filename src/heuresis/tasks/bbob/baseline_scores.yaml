@@ -1,0 +1,9 @@
+metric: mean_log_gap
+objective: min
+# Calibration: 10 × seed random-search runs of driver.py on default problem_spec
+# (3 funcs × 2 inst × 3 seeds × 5D × 1000 FEvals), seeds 0–29 split 3 per run.
+# Median across 10 runs; stdev across runs was 0.036 → very stable baseline.
+# 1000 FEvals in 5D is not enough for random search to approach the optimum on
+# Rosenbrock/Rastrigin, so the baseline sits at ~10^1.4 gap. LLM optimizers
+# should aim to drive this negative.
+baseline: 1.4145

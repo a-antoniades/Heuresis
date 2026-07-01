@@ -1,0 +1,10 @@
+train_task_id: [MinAtar/Breakout]
+test_task_id: [MinAtar/Asterix, MinAtar/SpaceInvaders, MinAtar/Freeway]
+
+source_path: task_src/OnPolicyRL
+template_backend: default
+
+# Only loss.py is an editable stub; all other discovered/ files use the
+# default/base reference implementation (discogen treats missing
+# change_<module> flags as False -> base).
+change_loss: true

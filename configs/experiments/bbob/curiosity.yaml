@@ -1,0 +1,34 @@
+# Heuresis launch config. Override any value with CLI flags after this file.
+task: bbob
+strategy: curiosity
+settings:
+  experiment_name: bbob-curiosity
+  resume_exp_id: null
+  agent: opencode
+  model: google/gemini-3.1-pro-preview
+  gpus: []
+  num_iterations: 20
+  count_valid: true
+  num_ideators: 4
+  executor_timeout: 600
+  ideator_timeout: 300
+  reviewer_timeout: 300
+  judge_timeout: 300
+  judge_agent: claude
+  judge_model: claude-sonnet-4-6
+  enable_judge: true
+  novelty_threshold: 2
+  novelty_max_rounds: 3
+  max_parents: 5
+  session_reset_every: 10
+  memory: false
+strategy_config:
+  n_seed: 6
+  k_neighbors: 10
+  softmax_tau: 1.0
+  anchor_history: 5
+  candidate_window: 20
+  seed_batch: 5
+  curiosity_novelty_threshold: 0.9
+  prediction_timeout: 180
+  ideators_per_gpu: 1

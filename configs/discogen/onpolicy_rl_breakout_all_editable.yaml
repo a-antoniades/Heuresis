@@ -1,0 +1,15 @@
+train_task_id: [MinAtar/Breakout]
+test_task_id: [MinAtar/Asterix, MinAtar/SpaceInvaders, MinAtar/Freeway]
+
+source_path: task_src/OnPolicyRL
+template_backend: default
+
+# All 6 discovered/ modules editable. Agent starts from discogen's
+# default/base reference PPO implementation (use_base defaults to True
+# in run.py) and may modify any of them.
+change_loss: true
+change_optim: true
+change_networks: true
+change_train: true
+change_activation: true
+change_targets: true

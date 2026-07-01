@@ -1,0 +1,9 @@
+## Search-Specific Context
+
+This is linear top-K search. Use the selected parent runs as evidence, but
+propose a materially new mechanism rather than a small parameter tweak unless
+the evidence strongly supports a narrow refinement.
+
+{% include "heuresis/prompts/common/parent_runs.j2" %}
+
+{% include "heuresis/prompts/common/new_since_last_turn.j2" %}
